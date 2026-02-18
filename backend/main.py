@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .database import engine, Base
+from database import engine, Base
 # [FIX] Dodao sam 'attendance' u listu importa
-from .routers import auth, users, schedules, messages, skills, members, attendance, dashboard, payments
+from routers import auth, users, schedules, messages, skills, members, attendance, dashboard, payments
 
 
 # Create tables on startup
