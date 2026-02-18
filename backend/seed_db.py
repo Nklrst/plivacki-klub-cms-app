@@ -10,7 +10,7 @@ from backend.database import SessionLocal, engine, Base
 from backend.models import (
     User, Member, Schedule, Enrollment, Attendance, Skill, MemberSkill, Role
 )
-from backend.auth import get_password_hash
+from utils import get_password_hash
 
 
 # ── Config ──────────────────────────────────────────────────────

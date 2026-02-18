@@ -9,7 +9,7 @@ from routers import auth, users, schedules, messages, skills, members, attendanc
 Base.metadata.create_all(bind=engine)
 
 # Auto-seed skills if empty
-from .seed_skills import seed_skills
+from seed_skills import seed_skills
 seed_skills()
 
 app = FastAPI(title="PK Ušće CMS")

@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List, Optional # [NOVO] Bitno za listu korisnika
-import models, schemas, auth, database
+import models, schemas, database
+import utils as auth
 
 router = APIRouter(
     prefix="/users",

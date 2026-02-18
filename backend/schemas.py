@@ -180,7 +180,7 @@ class BatchAttendanceCreate(BaseModel):
     member_ids: List[int]
 
 # --- Payment Schemas ---
-from .models import PaymentMethod
+from models import PaymentMethod
 
 class PaymentCreate(BaseModel):
     member_id: int

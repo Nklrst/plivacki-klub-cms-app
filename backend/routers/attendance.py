@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from datetime import date
-import models, schemas, auth, database
+import models, schemas, database
+import utils as auth
 
 router = APIRouter(
     prefix="/attendance",

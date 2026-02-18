@@ -1,7 +1,7 @@
 from backend.database import SessionLocal, engine, Base
 from backend.database import SessionLocal, engine, Base
 from backend.models import User, Member, Schedule, Role, Enrollment, Message, Skill
-from backend.auth import get_password_hash # Import hashing function
+from utils import get_password_hash # Import hashing function
 import os
 
 from datetime import date, time

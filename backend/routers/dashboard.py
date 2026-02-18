@@ -9,7 +9,7 @@ from sqlalchemy import func
 
 import models, schemas
 from database import get_db
-from auth import get_current_active_user
+from utils import get_current_active_user
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 
