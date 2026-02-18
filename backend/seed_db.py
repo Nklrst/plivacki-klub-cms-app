@@ -6,8 +6,8 @@ Run with: python -m backend.seed_db
 import random
 import os
 from datetime import date, timedelta
-from backend.database import SessionLocal, engine, Base
-from backend.models import (
+from database import SessionLocal, engine, Base
+from models import (
     User, Member, Schedule, Enrollment, Attendance, Skill, MemberSkill, Role
 )
 from utils import get_password_hash
