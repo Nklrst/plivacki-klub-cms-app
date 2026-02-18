@@ -1,5 +1,5 @@
-from backend.database import SessionLocal
-from backend.models import Skill
+from database import SessionLocal
+from models import Skill
 
 def seed_skills():
     db = SessionLocal()

@@ -1,7 +1,6 @@
-from backend.database import SessionLocal, engine, Base
-from backend.database import SessionLocal, engine, Base
-from backend.models import User, Member, Schedule, Role, Enrollment, Message, Skill
-from utils import get_password_hash # Import hashing function
+from database import SessionLocal, engine, Base
+from models import User, Member, Schedule, Role, Enrollment, Message, Skill
+from utils import get_password_hash # Ovo je već bilo dobro
 import os
 
 from datetime import date, time
