@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from datetime import date
-from .models import Role, MessageScope
+from models import Role, MessageScope
 
 # --- Token Schemas ---
 class Token(BaseModel):
