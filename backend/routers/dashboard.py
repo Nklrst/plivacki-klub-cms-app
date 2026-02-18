@@ -7,9 +7,9 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
-from .. import models, schemas
-from ..database import get_db
-from ..auth import get_current_active_user
+import models, schemas
+from database import get_db
+from auth import get_current_active_user
 
 router = APIRouter(prefix="/dashboard", tags=["dashboard"])
 

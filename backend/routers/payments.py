@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func as sa_func
 from typing import List
 from datetime import date
-from .. import models, schemas, auth, database
+import models, schemas, auth, database
 
 router = APIRouter(
     prefix="/payments",

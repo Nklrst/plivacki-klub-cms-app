@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 from pydantic import BaseModel
 from typing import List
-from .. import models, schemas, auth, database
+import models, schemas, auth, database
 
 router = APIRouter(
     prefix="/schedules",
