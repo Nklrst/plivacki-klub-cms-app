@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart'; // [FIX] Dodat import zbog tipova
+// [FIX] Dodat import zbog tipova
 import '../core/api_client.dart';
 
 class AttendanceRecord {

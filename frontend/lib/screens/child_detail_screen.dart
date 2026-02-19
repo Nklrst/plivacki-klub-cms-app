@@ -382,8 +382,9 @@ class _ChildDetailScreenState extends State<ChildDetailScreen> {
                   else ...[
                     // Prikaz postojećih termina
                     ..._enrollments.map((enrollment) {
-                      if (enrollment.schedule == null)
+                      if (enrollment.schedule == null) {
                         return const SizedBox.shrink();
+                      }
                       return Container(
                         margin: const EdgeInsets.only(bottom: 10),
                         padding: const EdgeInsets.all(16),
@@ -428,7 +429,7 @@ class _ChildDetailScreenState extends State<ChildDetailScreen> {
                           ],
                         ),
                       );
-                    }).toList(),
+                    }),
 
                     // Dugme za dodavanje drugog termina (ako ih je manje od 2)
                     if (_enrollments.length < 2)

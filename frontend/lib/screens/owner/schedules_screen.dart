@@ -291,7 +291,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
 
                     // Day
                     DropdownButtonFormField<String>(
-                      value: selectedDay,
+                      initialValue: selectedDay,
                       decoration: InputDecoration(
                         labelText: 'Dan',
                         border: OutlineInputBorder(

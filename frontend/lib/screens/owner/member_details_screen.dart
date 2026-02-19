@@ -258,7 +258,7 @@ class _MemberDetailsScreenState extends State<MemberDetailsScreen> {
               // Month dropdown
               Expanded(
                 child: DropdownButtonFormField<int>(
-                  value: _selectedMonth,
+                  initialValue: _selectedMonth,
                   decoration: InputDecoration(
                     labelText: 'Mesec',
                     border: OutlineInputBorder(
@@ -289,7 +289,7 @@ class _MemberDetailsScreenState extends State<MemberDetailsScreen> {
               SizedBox(
                 width: 100,
                 child: DropdownButtonFormField<int>(
-                  value: _selectedYear,
+                  initialValue: _selectedYear,
                   decoration: InputDecoration(
                     labelText: 'Godina',
                     border: OutlineInputBorder(
@@ -566,7 +566,7 @@ class _MemberDetailsScreenState extends State<MemberDetailsScreen> {
                     color: skill.isMastered ? Colors.green : Colors.grey,
                   ),
                   value: skill.isMastered,
-                  activeColor: Colors.green,
+                  activeThumbColor: Colors.green,
                   onChanged: (val) async {
                     // Optimistic update
                     setState(() => skill.isMastered = val);
