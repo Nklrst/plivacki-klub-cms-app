@@ -4,7 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class ApiClient {
   // Use 127.0.0.1 for Web/iOS Simulator, 10.0.2.2 for Android Emulator
   // Since user said "running on Chrome", 127.0.0.1 is correct.
-  static const String baseUrl = 'http://127.0.0.1:8000';
+  static const String baseUrl = 'https://plivacki-klub-cms-app.onrender.com';
 
   final Dio _dio;
   final FlutterSecureStorage _storage;
