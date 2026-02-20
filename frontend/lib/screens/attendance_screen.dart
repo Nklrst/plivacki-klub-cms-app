@@ -499,73 +499,75 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             ),
 
             // ── Actions ──
-            Wrap(
-              spacing: 8,
-              runSpacing: 6,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                // Info Button
-                ElevatedButton.icon(
-                  onPressed: () => _showHealthDialog(item),
-                  icon: const Icon(Icons.info_outline, size: 16),
-                  label: const Text(
-                    "Informacije o plivaču",
-                    style: TextStyle(fontSize: 11),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
+            Flexible(
+              child: Wrap(
+                spacing: 8,
+                runSpacing: 6,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  // Info Button
+                  ElevatedButton.icon(
+                    onPressed: () => _showHealthDialog(item),
+                    icon: const Icon(Icons.info_outline, size: 16),
+                    label: const Text(
+                      "Informacije o plivaču",
+                      style: TextStyle(fontSize: 11),
                     ),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-
-                // Skills Button
-                ElevatedButton.icon(
-                  onPressed: () =>
-                      _showSkillsDialog(item.memberId, item.memberName),
-                  icon: const Icon(Icons.checklist, size: 16),
-                  label: const Text(
-                    "Savladani Elementi",
-                    style: TextStyle(fontSize: 11),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
-                  ),
-                ),
-
-                // Attendance Checkbox
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "Prisutan",
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey.shade500,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
                       ),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      backgroundColor: Colors.blue,
+                      foregroundColor: Colors.white,
                     ),
-                    Checkbox(
-                      value: item.isPresent,
-                      activeColor: Colors.green,
-                      onChanged: (val) {
-                        provider.toggleAttendance(item.memberId);
-                      },
+                  ),
+
+                  // Skills Button
+                  ElevatedButton.icon(
+                    onPressed: () =>
+                        _showSkillsDialog(item.memberId, item.memberName),
+                    icon: const Icon(Icons.checklist, size: 16),
+                    label: const Text(
+                      "Savladani Elementi",
+                      style: TextStyle(fontSize: 11),
                     ),
-                  ],
-                ),
-              ],
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 12,
+                      ),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      backgroundColor: Colors.orange,
+                      foregroundColor: Colors.white,
+                    ),
+                  ),
+
+                  // Attendance Checkbox
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        "Prisutan",
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                      Checkbox(
+                        value: item.isPresent,
+                        activeColor: Colors.green,
+                        onChanged: (val) {
+                          provider.toggleAttendance(item.memberId);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

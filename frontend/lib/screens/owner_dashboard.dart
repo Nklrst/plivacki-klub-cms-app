@@ -85,11 +85,53 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
             icon: const Icon(Icons.refresh),
             onPressed: () => owner.fetchDashboardData(),
           ),
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => auth.logout(),
-          ),
         ],
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  colors: [Color(0xFF005696), Color(0xFF0077CC)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
+              currentAccountPicture: const CircleAvatar(
+                backgroundColor: Colors.white,
+                child: Icon(Icons.person, size: 40, color: Color(0xFF005696)),
+              ),
+              accountName: Text(
+                auth.user?.fullName ?? 'Vlasnik',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              accountEmail: Text(auth.user?.email ?? ''),
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Podešavanja'),
+              onTap: () {
+                Navigator.of(context).pop();
+                // TODO: navigate to settings screen
+              },
+            ),
+            const Spacer(),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text(
+                'Odjavi se',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+                auth.logout();
+              },
+            ),
+            const SizedBox(height: 16),
+          ],
+        ),
       ),
       body: owner.isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -192,29 +234,32 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                       Colors.indigo,
                     ),
                     const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        _buildStatCard(
-                          icon: Icons.people,
-                          label: "Aktivni Članovi",
-                          value: "${owner.stats?.activeMembers ?? 0}",
-                          color: Colors.blue,
-                        ),
-                        const SizedBox(width: 12),
-                        _buildStatCard(
-                          icon: Icons.check_circle,
-                          label: "Današnji Dolasci",
-                          value: "${owner.stats?.attendanceToday ?? 0}",
-                          color: Colors.green,
-                        ),
-                        const SizedBox(width: 12),
-                        _buildStatCard(
-                          icon: Icons.payments,
-                          label: "Prihod (Feb)",
-                          value: "${owner.stats?.revenueMonth ?? 0} RSD",
-                          color: Colors.orange,
-                        ),
-                      ],
+                    IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          _buildStatCard(
+                            icon: Icons.people,
+                            label: "Aktivni Članovi",
+                            value: "${owner.stats?.activeMembers ?? 0}",
+                            color: Colors.blue,
+                          ),
+                          const SizedBox(width: 12),
+                          _buildStatCard(
+                            icon: Icons.check_circle,
+                            label: "Današnji Dolasci",
+                            value: "${owner.stats?.attendanceToday ?? 0}",
+                            color: Colors.green,
+                          ),
+                          const SizedBox(width: 12),
+                          _buildStatCard(
+                            icon: Icons.payments,
+                            label: "Prihod (Feb)",
+                            value: "${owner.stats?.revenueMonth ?? 0} RSD",
+                            color: Colors.orange,
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(height: 28),
 
@@ -357,9 +402,11 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
       child: Card(
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Padding(
+        child: Container(
+          height: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 28, color: color),
               const SizedBox(height: 8),
