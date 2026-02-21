@@ -8,6 +8,7 @@ import 'owner/staff_screen.dart';
 import 'owner/notifications_screen.dart';
 import 'owner/schedules_screen.dart';
 import 'owner/finance_screen.dart';
+import 'owner/settings_screen.dart';
 import 'notifications_screen.dart' as inbox;
 import '../providers/notification_provider.dart';
 
@@ -113,7 +114,9 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
               title: const Text('Podešavanja'),
               onTap: () {
                 Navigator.of(context).pop();
-                // TODO: navigate to settings screen
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const SettingsScreen()),
+                );
               },
             ),
             const Spacer(),
