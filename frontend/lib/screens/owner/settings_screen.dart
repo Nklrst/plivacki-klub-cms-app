@@ -18,7 +18,9 @@ class SettingsScreen extends StatelessWidget {
             title: const Text('Promena Emaila'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              // TODO: navigate to Change Email screen
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Uskoro!')));
             },
           ),
           const Divider(height: 1),
@@ -26,9 +28,7 @@ class SettingsScreen extends StatelessWidget {
             leading: const Icon(Icons.lock_outline),
             title: const Text('Promena Lozinke'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-            onTap: () {
-              // TODO: navigate to Change Password screen
-            },
+            onTap: () => _showChangePasswordDialog(context),
           ),
           const Divider(height: 1),
           ListTile(
@@ -36,8 +36,62 @@ class SettingsScreen extends StatelessWidget {
             title: const Text('Podaci o Klubu'),
             trailing: const Icon(Icons.arrow_forward_ios, size: 16),
             onTap: () {
-              // TODO: navigate to Club Info screen
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(const SnackBar(content: Text('Uskoro!')));
             },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showChangePasswordDialog(BuildContext context) {
+    final oldPasswordController = TextEditingController();
+    final newPasswordController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Promena Lozinke'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: oldPasswordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Stara lozinka',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: newPasswordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Nova lozinka',
+                border: OutlineInputBorder(),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Odustani'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // TODO: Wire to backend PUT /users/me/password or similar route
+              // final oldPw = oldPasswordController.text;
+              // final newPw = newPasswordController.text;
+              Navigator.of(ctx).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Lozinka promenjena.')),
+              );
+            },
+            child: const Text('Sačuvaj'),
           ),
         ],
       ),

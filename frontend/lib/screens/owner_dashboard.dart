@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../providers/auth_provider.dart';
+import '../models/user.dart';
 import '../providers/owner_provider.dart';
 import 'owner/members_screen.dart';
 import 'owner/staff_screen.dart';
@@ -38,6 +39,39 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
     6: 'Subota',
     7: 'Nedelja',
   };
+
+  void _showEditNameDialog(BuildContext context, AuthProvider auth) {
+    final controller = TextEditingController(text: auth.user?.fullName ?? '');
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Vlasnik Kluba:'),
+        content: TextField(
+          controller: controller,
+          decoration: const InputDecoration(
+            labelText: 'Novo ime',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Odustani'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              // TODO: Wire to backend PUT /users/me or similar route
+              Navigator.of(ctx).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Ime sačuvano (lokalno).')),
+              );
+            },
+            child: const Text('Sačuvaj'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,9 +137,24 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                 backgroundColor: Colors.white,
                 child: Icon(Icons.person, size: 40, color: Color(0xFF005696)),
               ),
-              accountName: Text(
-                auth.user?.fullName ?? 'Vlasnik',
-                style: const TextStyle(fontWeight: FontWeight.bold),
+              accountName: Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      auth.user?.fullName ?? 'Vlasnik',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  if (auth.user?.role == UserRole.OWNER)
+                    GestureDetector(
+                      onTap: () => _showEditNameDialog(context, auth),
+                      child: const Padding(
+                        padding: EdgeInsets.only(left: 8),
+                        child: Icon(Icons.edit, size: 20, color: Colors.white),
+                      ),
+                    ),
+                ],
               ),
               accountEmail: Text(auth.user?.email ?? ''),
             ),
@@ -117,6 +166,26 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => const SettingsScreen()),
                 );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.privacy_tip),
+              title: const Text('Pravila privatnosti'),
+              onTap: () {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('Uskoro!')));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.description),
+              title: const Text('Uslovi korišćenja'),
+              onTap: () {
+                Navigator.of(context).pop();
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(const SnackBar(content: Text('Uskoro!')));
               },
             ),
             const Spacer(),
