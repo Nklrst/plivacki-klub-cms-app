@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../core/api_client.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -82,14 +84,39 @@ class SettingsScreen extends StatelessWidget {
             child: const Text('Odustani'),
           ),
           ElevatedButton(
-            onPressed: () {
-              // TODO: Wire to backend PUT /users/me/password or similar route
-              // final oldPw = oldPasswordController.text;
-              // final newPw = newPasswordController.text;
-              Navigator.of(ctx).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Lozinka promenjena.')),
-              );
+            onPressed: () async {
+              final oldPw = oldPasswordController.text.trim();
+              final newPw = newPasswordController.text.trim();
+
+              if (oldPw.isEmpty || newPw.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Popunite oba polja.')),
+                );
+                return;
+              }
+
+              try {
+                final apiClient = Provider.of<ApiClient>(
+                  context,
+                  listen: false,
+                );
+                await apiClient.dio.put(
+                  '/users/me/password',
+                  data: {'old_password': oldPw, 'new_password': newPw},
+                );
+                Navigator.of(ctx).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lozinka je uspešno promenjena!'),
+                  ),
+                );
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Greška: Stara lozinka nije tačna.'),
+                  ),
+                );
+              }
             },
             child: const Text('Sačuvaj'),
           ),

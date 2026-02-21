@@ -14,6 +14,20 @@ router = APIRouter(
 async def read_users_me(current_user: models.User = Depends(auth.get_current_active_user)):
     return current_user
 
+# --- 1b. Promena lozinke (Change Password) ---
+@router.put("/me/password")
+def change_password(
+    payload: schemas.PasswordChange,
+    db: Session = Depends(auth.get_db),
+    current_user: models.User = Depends(auth.get_current_active_user),
+):
+    if not auth.verify_password(payload.old_password, current_user.hashed_password):
+        raise HTTPException(status_code=400, detail="Stara lozinka nije tačna.")
+
+    current_user.hashed_password = auth.get_password_hash(payload.new_password)
+    db.commit()
+    return {"detail": "Lozinka je uspešno promenjena."}
+
 # --- 2. STARI KOD: Kreiraj korisnika (Bitno za pravljenje Trenera/Roditelja) ---
 @router.post("/", response_model=schemas.UserOut)
 def create_user(user: schemas.UserCreate, db: Session = Depends(auth.get_db)):
