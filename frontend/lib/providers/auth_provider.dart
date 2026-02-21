@@ -9,6 +9,7 @@ class AuthProvider with ChangeNotifier {
   String? _token;
   bool _isLoading = false;
   bool _isAutoLoginRunning = false;
+  bool _isInitialized = false;
 
   AuthProvider(this._apiClient);
 
@@ -16,6 +17,7 @@ class AuthProvider with ChangeNotifier {
   User? get user => _user;
   String? get token => _token;
   bool get isLoading => _isLoading;
+  bool get isInitialized => _isInitialized;
 
   // --- 1. LOGIN METODA (Popravljena) ---
   Future<void> login(String email, String password) async {
@@ -87,6 +89,8 @@ class AuthProvider with ChangeNotifier {
       await logout();
     } finally {
       _isAutoLoginRunning = false;
+      _isInitialized = true;
+      notifyListeners();
     }
   }
 

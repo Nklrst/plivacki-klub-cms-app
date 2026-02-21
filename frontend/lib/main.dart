@@ -63,6 +63,30 @@ class AuthWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context);
 
+    // Show splash screen while auto-login is in progress
+    if (!auth.isInitialized) {
+      return Scaffold(
+        body: Container(
+          width: double.infinity,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFF005696), Color(0xFF0077CC)],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/logo_white.png', height: 80),
+              const SizedBox(height: 24),
+              const CircularProgressIndicator(color: Colors.white),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (!auth.isAuth) {
       return const LoginScreen();
     }
