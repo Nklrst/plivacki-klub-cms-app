@@ -144,6 +144,7 @@ def delete_member(
     db.query(models.Attendance).filter(models.Attendance.member_id == member_id).delete()
     db.query(models.Enrollment).filter(models.Enrollment.member_id == member_id).delete()
     db.query(models.MemberSkill).filter(models.MemberSkill.member_id == member_id).delete()
+    db.query(models.Payment).filter(models.Payment.member_id == member_id).delete()
 
     # 2. Delete the member
     db.delete(member)

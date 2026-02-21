@@ -1,5 +1,7 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import IntegrityError
 from database import engine, Base
 # [FIX] Dodao sam 'attendance' u listu importa
 from routers import auth, users, schedules, messages, skills, members, attendance, dashboard, payments
@@ -13,6 +15,17 @@ from seed_skills import seed_skills
 seed_skills()
 
 app = FastAPI(title="PK Ušće CMS")
+
+# Global IntegrityError handler — catches FK violations and returns
+# a clean 400 instead of a CORS-breaking 500.
+@app.exception_handler(IntegrityError)
+async def integrity_error_handler(request: Request, exc: IntegrityError):
+    return JSONResponse(
+        status_code=400,
+        content={
+            "detail": "Ne možete obrisati ovaj podatak jer je povezan sa drugim elementima u sistemu."
+        },
+    )
 
 # CORS Middleware (Dozvoljava pristup sa svih adresa)
 app.add_middleware(

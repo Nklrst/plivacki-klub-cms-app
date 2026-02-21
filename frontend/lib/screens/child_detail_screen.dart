@@ -409,7 +409,7 @@ class _ChildDetailScreenState extends State<ChildDetailScreen> {
                                     ),
                                   ),
                                   Text(
-                                    "Grupa: ${enrollment.schedule!.groupName ?? 'Standard'}",
+                                    "Grupa: ${enrollment.schedule!.groupName}",
                                     style: const TextStyle(
                                       color: Colors.grey,
                                       fontSize: 12,

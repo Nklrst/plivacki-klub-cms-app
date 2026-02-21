@@ -89,7 +89,7 @@ async def delete_schedule(
     current_user: models.User = Depends(auth.get_current_active_user)
 ):
     """
-    Delete a schedule. Only for OWNERS.
+    Delete a schedule and cascade-remove all related records.
     """
     if current_user.role != models.Role.OWNER:
         raise HTTPException(status_code=403, detail="Only Owners can delete schedules")
@@ -98,14 +98,14 @@ async def delete_schedule(
     if not db_schedule:
         raise HTTPException(status_code=404, detail="Schedule not found")
 
-    # Optional: Check for active enrollments and block delete? 
-    # For now, we allow delete, which might cascade depending on DB constraints (not set to cascade in models.py yet).
-    # Or we just set is_active = False? 
-    # User asked for "Delete ... from database". So we delete.
-    # Note: If there are foreign keys (enrollments), this might fail if no cascade delete.
-    # We will try standard delete. If it fails due to IntegrityError, user will see 500. 
-    # Ideally should handle this, but for "clean up invalid entries", likely they have no enrollments.
-    
+    # TODO: Send push notification to enrolled parents about schedule cancellation (Next Release)
+
+    # Cascade delete related records
+    db.query(models.Attendance).filter(models.Attendance.schedule_id == schedule_id).delete()
+    db.query(models.Enrollment).filter(models.Enrollment.schedule_id == schedule_id).delete()
+    db.query(models.ScheduleCancellation).filter(models.ScheduleCancellation.schedule_id == schedule_id).delete()
+    db.query(models.Message).filter(models.Message.target_schedule_id == schedule_id).update({"target_schedule_id": None})
+
     db.delete(db_schedule)
     db.commit()
     return None

@@ -93,6 +93,28 @@ def delete_user(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
+    # --- Coach cleanup: nullify references before deleting ---
+    if user.role == models.Role.COACH:
+        db.query(models.Schedule).filter(
+            models.Schedule.coach_id == user_id
+        ).update({"coach_id": None})
+
+        db.query(models.Attendance).filter(
+            models.Attendance.coach_id == user_id
+        ).update({"coach_id": None})
+
+        db.query(models.MemberSkill).filter(
+            models.MemberSkill.coach_id == user_id
+        ).update({"coach_id": None})
+
+    # --- Clean up messages sent/received by this user ---
+    db.query(models.Message).filter(
+        models.Message.sender_id == user_id
+    ).delete()
+    db.query(models.Message).filter(
+        models.Message.recipient_id == user_id
+    ).update({"recipient_id": None})
+
     db.delete(user)
     db.commit()
     return {"detail": "User deleted"}
