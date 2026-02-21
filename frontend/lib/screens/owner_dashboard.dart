@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import '../providers/auth_provider.dart';
@@ -21,12 +22,17 @@ class OwnerDashboard extends StatefulWidget {
 }
 
 class _OwnerDashboardState extends State<OwnerDashboard> {
+  String _appVersion = '';
+
   @override
   void initState() {
     super.initState();
     Future.microtask(() {
       Provider.of<OwnerProvider>(context, listen: false).fetchDashboardData();
       Provider.of<NotificationProvider>(context, listen: false).fetchMessages();
+    });
+    PackageInfo.fromPlatform().then((info) {
+      setState(() => _appVersion = info.version);
     });
   }
 
@@ -200,6 +206,13 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                 Navigator.of(context).pop();
                 auth.logout();
               },
+            ),
+            const SizedBox(height: 8),
+            Center(
+              child: Text(
+                _appVersion.isNotEmpty ? 'Verzija $_appVersion' : '',
+                style: const TextStyle(fontSize: 12, color: Colors.grey),
+              ),
             ),
             const SizedBox(height: 16),
           ],

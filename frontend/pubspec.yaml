@@ -43,6 +43,7 @@ dependencies:
   intl: ^0.18.1
   google_fonts: ^6.1.0
   fl_chart: ^0.65.0
+  package_info_plus: ^8.0.0
 
 dev_dependencies:
   flutter_test:

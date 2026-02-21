@@ -54,74 +54,93 @@ class SettingsScreen extends StatelessWidget {
 
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Promena Lozinke'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: oldPasswordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Stara lozinka',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: newPasswordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Nova lozinka',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text('Odustani'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final oldPw = oldPasswordController.text.trim();
-              final newPw = newPasswordController.text.trim();
+      builder: (ctx) {
+        bool obscureOld = true;
+        bool obscureNew = true;
 
-              if (oldPw.isEmpty || newPw.isEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Popunite oba polja.')),
-                );
-                return;
-              }
+        return StatefulBuilder(
+          builder: (ctx, setState) => AlertDialog(
+            title: const Text('Promena Lozinke'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: oldPasswordController,
+                  obscureText: obscureOld,
+                  decoration: InputDecoration(
+                    labelText: 'Stara lozinka',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obscureOld ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () => setState(() => obscureOld = !obscureOld),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: newPasswordController,
+                  obscureText: obscureNew,
+                  decoration: InputDecoration(
+                    labelText: 'Nova lozinka',
+                    border: const OutlineInputBorder(),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obscureNew ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      onPressed: () => setState(() => obscureNew = !obscureNew),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(ctx).pop(),
+                child: const Text('Odustani'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  final oldPw = oldPasswordController.text.trim();
+                  final newPw = newPasswordController.text.trim();
 
-              try {
-                final apiClient = Provider.of<ApiClient>(
-                  context,
-                  listen: false,
-                );
-                await apiClient.dio.put(
-                  '/users/me/password',
-                  data: {'old_password': oldPw, 'new_password': newPw},
-                );
-                Navigator.of(ctx).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Lozinka je uspešno promenjena!'),
-                  ),
-                );
-              } catch (e) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Greška: Stara lozinka nije tačna.'),
-                  ),
-                );
-              }
-            },
-            child: const Text('Sačuvaj'),
+                  if (oldPw.isEmpty || newPw.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Popunite oba polja.')),
+                    );
+                    return;
+                  }
+
+                  try {
+                    final apiClient = Provider.of<ApiClient>(
+                      context,
+                      listen: false,
+                    );
+                    await apiClient.dio.put(
+                      '/users/me/password',
+                      data: {'old_password': oldPw, 'new_password': newPw},
+                    );
+                    Navigator.of(ctx).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Lozinka je uspešno promenjena!'),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Greška: Stara lozinka nije tačna.'),
+                      ),
+                    );
+                  }
+                },
+                child: const Text('Sačuvaj'),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
