@@ -139,9 +139,15 @@ class _OwnerDashboardState extends State<OwnerDashboard> {
                   end: Alignment.bottomRight,
                 ),
               ),
-              currentAccountPicture: const CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(Icons.person, size: 40, color: Color(0xFF005696)),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: Colors.white.withValues(alpha: 0.2),
+                child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Image.asset(
+                    'assets/images/logo_white.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
               accountName: Row(
                 children: [
